@@ -1,11 +1,11 @@
 import os
 import discord
 from discord.ext import commands, tasks
-import api_responses
+import chatbot
 import os
 from dotenv import load_dotenv
+import random
 
-import heroinfo
 
 
 def run_discord_bot():
@@ -15,6 +15,8 @@ def run_discord_bot():
     app_commands = discord.app_commands
     bot = commands.Bot(command_prefix="%", intents=discord.Intents.all())
 
+    chat = chatbot.create_chat()
+    
     @bot.event
     async def on_ready():
         print(f"{bot.user} is ready")
@@ -22,40 +24,52 @@ def run_discord_bot():
             await bot.tree.sync()
         except Exception as e:
             print(e)
+            
+    @bot.event
+    async def on_message(message):
+        if message.author != bot.user:
+            username = str(message.author)
+            user_message = str(message.content)
+            channel = str(message.channel)
 
-    #Sample Code to refer to:
-
-    # @bot.tree.command(name='masteryna', description='Get Player Mastery Info Based on Summoner ID.')
-    # @app_commands.describe(name = "Summoner Name", tag = "Summoner Tag number after the # (Ex: '0001')")
-    # async def masteryna(interaction: discord.Interaction, name: str, tag: int):
-    #     await interaction.response.defer()
-
-
-
-    #     result = api_responses.getMastery(name, tag)
-
-    #     output = f"**Here are the top 3 highest mastery champions of {name}#{tag}:**\n\n\n"
-
-
-    #     for i in range(3):
-    #         champ = api_responses.get_champion_by_key(result[i]["championId"])
-    #         try:
-    #             output += f"#{i+1}: {champ["id"]}, \"{champ["title"]}\" \nMastery Level: {result[i]["championLevel"]} ({result[i]["championPoints"]} pts.) https://ddragon.leagueoflegends.com/cdn/img/champion/splash/{champ["id"]}_0.jpg \n\n"
-    #         except Exception as e:
-    #             print(e)
-
-    #     await interaction.followup.send(output)
-    
-    @bot.tree.command(name='Hero Info', description='Lists Information of a specific hero')
-    @app_commands.describe(name = "Hero")
-    async def heroinfo(interaction: discord.Interaction, name: str):
-        try:
-            await interaction.send_message(heroinfo.getBasic(name))
-        except Exception as e:
-            print(e)
-            await interaction.response.send_message("Failed")
+            print(f"{username} said: '{user_message}' ({channel})")
+            
+            if bot.user in message.mentions:
+                resp = chat.send_message(f"Respond relevantly to this chat message (Ignore this string if it's ever in this response: <@1331423440246280243>): {user_message}").text
+                await message.reply(resp)
+            elif message.reference is not None:
+                replied_message = await channel.fetch_message(message.reference.message_id)
+                if replied_message.author == bot.user:
+                    resp = chat.send_message(f"Respond relevantly to this chat message (Ignore this string if it's ever in this response: <@1331423440246280243>): {user_message}").text
+                    await message.reply(resp)
+            elif message.guild is None:
+                resp = chat.send_message(f"Respond relevantly to this chat message (it's a dm to you): {user_message}").text
+                await message.author.send(resp)
+            elif user_message[0] != '%':
+                rannum = random.randint(1,4)
+                if rannum == 1:
+                    resp = chat.send_message(f"Try to respond relevantly to this chat message (They are usually not talking to you): {user_message}").text
+                    await message.reply(resp)
+            else:
+                await bot.process_commands(message)
+                    
+                    
         
-    
+
+
+    # @bot.command()
+    # async def askgalacta(ctx):
+    #     try:
+    #         input = ctx.message.content[12:]
+            
+    #         resp = chat.send_message(input).text
+            
+    #         await ctx.message.reply(resp)
+    #     except Exception as e:
+    #         print(e)
+    #         await ctx.message.reply("Please check your input and% try again")
+        
+
     
     
     
