@@ -51,13 +51,13 @@ def run_discord_bot():
             print(f"{username} said: '{user_message}' ({channel})")
             
             if bot.user in message.mentions:
-                resp = chat.send_message(f"Respond relevantly to this chat message (Ignore this string if it's ever in this response: <@1331423440246280243>): {user_message}").text
+                resp = chat.send_message(f"Respond relevantly to this chat message from a chatter,{username}, talking to you (<@1331423440246280243> is your ping, ignore it and avoid using it in your message): {user_message}").text
                 await message.reply(resp)
                 save_history(username, user_message, resp)
             elif message.reference is not None:
                 replied_message = await channel.fetch_message(message.reference.message_id)
                 if replied_message.author == bot.user:
-                    resp = chat.send_message(f"Respond relevantly to this chat message (Ignore this string if it's ever in this response: <@1331423440246280243>): {user_message}").text
+                    resp = chat.send_message(f"Respond relevantly to this chat message from a chatter, {username}, talking to you): {user_message}").text
                     await message.reply(resp)
                     save_history(username, user_message, resp)
             elif message.guild is None:
@@ -65,7 +65,7 @@ def run_discord_bot():
                 await message.author.send(resp)
                 save_history(username, user_message, resp)
             elif user_message[0] != '%':
-                rannum = random.randint(1,4)
+                rannum = random.randint(1,5)
                 if rannum == 1:
                     resp = chat.send_message(f"Try to respond relevantly to this chat message (They are usually not talking to you): {user_message}").text
                     await message.reply(resp)
