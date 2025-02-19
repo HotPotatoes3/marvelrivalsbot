@@ -55,7 +55,7 @@ def run_discord_bot():
                 await message.reply(resp)
                 save_history(username, user_message, resp)
             elif message.reference is not None:
-                replied_message = await channel.fetch_message(message.reference.message_id)
+                replied_message = await message.channel.fetch_message(message.reference.message_id)
                 if replied_message.author == bot.user:
                     resp = chat.send_message(f"Respond relevantly to this chat message from a chatter, {username}, talking to you): {user_message}").text
                     await message.reply(resp)
