@@ -97,7 +97,7 @@ def run_discord_bot():
             embed.add_field(name="Total Matches", value=f"**{response['stats']['total_matches']}**", inline=False)
             embed.add_field(name="Win Rate", value=f"**{str(round((float(response['stats']['total_wins'])/float(response['stats']['total_matches']) * 100), 2))}%**", inline=False)
             try:
-                embed.set_thumbnail(url=f'{heroinfo.getPic(response['player_icon_id'])}')
+                embed.set_thumbnail(url=f'{heroinfo.getPic(response["player_icon_id"])}')
                 await ctx.message.reply(embed=embed)
             except Exception as e:
                 print(e)
