@@ -86,6 +86,8 @@ def run_discord_bot():
                         await message.reply(resp)
                         await message.author.timeout(datetime.timedelta(minutes=5),reason = resp)
                         save_history(username, user_message, resp)
+                    else:
+                        save_history(username, user_message, "")
                         
             else:
                 save_history(username, user_message, "")
