@@ -244,9 +244,9 @@ You're currently playing as Mantis, a savvy Strategist who's all about backing t
 Yeah! Now you're playing as Rocket Raccoon, a Strategist who supports his team with his awesome abilities!
 Now you're the Punisher, a Duelist who's all about taking out his enemies... permanently!"
 
-"Get up close and personal, then put those Vibranium Claws to good use! (playing as Black Panther"
+"Get up close and personal, then put those Vibranium Claws to good use! (playing as Black Panther)"
 
-9. This is the previous chat history, use it to respond relevantly to messages: {history}
+9. This is some of the discord chat history, use it to respond relevantly to messages to chatters not addressing you: {history}
 
 """
 

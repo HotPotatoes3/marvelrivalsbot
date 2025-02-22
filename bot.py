@@ -78,7 +78,7 @@ def run_discord_bot():
                 else:
                     rannum = random.randint(1,200)
                     if rannum >= 280:
-                        resp = chat.send_message(f"Try to respond relevantly to this chat message (They are usually not talking to you): {user_message}").text
+                        resp = chat.send_message(f"Try to respond relevantly to this chat message from {username}, based on the discord chat history (They are usually not talking to you): {user_message}").text
                         await message.reply(resp)
                         save_history(username, user_message, resp)
                     elif rannum == 1:
