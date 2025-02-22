@@ -23,6 +23,7 @@ def getbasicInfo(name):
         return playerinfo
     except Exception as e:
         return "An error has occured"
+    
 
 def getPic(id):
     response = requests.get(f'https://mrapi.org/api/item/{id}', headers=headers)

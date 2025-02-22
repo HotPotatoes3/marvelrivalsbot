@@ -20,11 +20,27 @@ def run_discord_bot():
 
     chat = chatbot.create_chat()
     HISTORY_FILE = "conversation_history.txt"
-    
+    MAX_LINES = 300  # Set this to the max number of lines you want in the file
+
     def save_history(username, user_message, bot_response):
-        with open(HISTORY_FILE, "a", encoding="utf-8") as f:
-            f.write(f"{username}: {user_message}\n")
-            f.write(f"Bot: {bot_response}\n")
+        # Read the existing lines
+        try:
+            with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+                lines = f.readlines()
+        except FileNotFoundError:
+            lines = []
+
+        # Append the new messages
+        lines.append(f"{username}: {user_message}\n")
+        lines.append(f"Bot: {bot_response}\n")
+
+        # Trim to the last MAX_LINES
+        if len(lines) > MAX_LINES:
+            lines = lines[-MAX_LINES:]
+
+        # Write back to the file
+        with open(HISTORY_FILE, "w", encoding="utf-8") as f:
+            f.writelines(lines)
     
     
     
@@ -60,9 +76,8 @@ def run_discord_bot():
                     await message.author.send(resp)
                     save_history(username, user_message, resp)
                 else:
-                    rannum = random.randint(1,100)
-                    print(rannum)
-                    if rannum >= 80:
+                    rannum = random.randint(1,200)
+                    if rannum >= 280:
                         resp = chat.send_message(f"Try to respond relevantly to this chat message (They are usually not talking to you): {user_message}").text
                         await message.reply(resp)
                         save_history(username, user_message, resp)
@@ -70,8 +85,10 @@ def run_discord_bot():
                         resp = chat.send_message(f"Make up a random reason to timeout this chatter, {username}, for 5 minutes based on their message: {user_message}").text
                         await message.reply(resp)
                         await message.author.timeout(datetime.timedelta(minutes=5),reason = resp)
+                        save_history(username, user_message, resp)
                         
             else:
+                save_history(username, user_message, "")
                 await bot.process_commands(message)
             
                     

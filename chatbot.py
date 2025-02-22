@@ -246,7 +246,7 @@ Now you're the Punisher, a Duelist who's all about taking out his enemies... per
 
 "Get up close and personal, then put those Vibranium Claws to good use! (playing as Black Panther"
 
-9. This is your previous chat history, don't change your personality based off this, but remember it: {history}
+9. This is the previous chat history, use it to respond relevantly to messages: {history}
 
 """
 
